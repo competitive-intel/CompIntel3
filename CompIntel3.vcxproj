@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64"><Configuration>Debug</Configuration><Platform>x64</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64"><Configuration>Release</Configuration><Platform>x64</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AC80E0A9-F20A-4989-9D9E-7EC225540F98}</ProjectGuid>
+    <RootNamespace>CompIntel3</RootNamespace>
+    <ProjectName>CompIntel3</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+    <WindowsPackageType>None</WindowsPackageType>
+    <AppxPackage>false</AppxPackage>
+    <AppContainerApplication>false</AppContainerApplication>
+    <UseWinUI>true</UseWinUI>
+    <WebView2UseWinRT>true</WebView2UseWinRT>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <WindowsAppSdkDeploymentManagerInitialize>false</WindowsAppSdkDeploymentManagerInitialize>
+    <CppWinRTOptimized>true</CppWinRTOptimized>
+    <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
+    <CppWinRTGenerateWindowsMetadata>false</CppWinRTGenerateWindowsMetadata>
+  </PropertyGroup>
+  <Import Project="packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="packages\Microsoft.WindowsAppSDK.Base.2.6.5\build\native\Microsoft.WindowsAppSDK.Base.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.Base.2.6.5\build\native\Microsoft.WindowsAppSDK.Base.props')" />
+  <Import Project="packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.6.5\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.6.5\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.props')" />
+  <Import Project="packages\Microsoft.WindowsAppSDK.Foundation.2.6.5\build\native\Microsoft.WindowsAppSDK.Foundation.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.Foundation.2.6.5\build\native\Microsoft.WindowsAppSDK.Foundation.props')" />
+  <Import Project="packages\Microsoft.WindowsAppSDK.WinUI.2.6.5\build\native\Microsoft.WindowsAppSDK.WinUI.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.WinUI.2.6.5\build\native\Microsoft.WindowsAppSDK.WinUI.props')" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Release'">false</UseDebugLibraries>
+    <WholeProgramOptimization Condition="'$(Configuration)'=='Release'">true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(MSBuildProjectDirectory)\artifacts\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(MSBuildProjectDirectory)\artifacts\obj\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>CompIntel3</TargetName>
+    <OutDir Condition="'$(UiSmokeTests)'=='true'">$(MSBuildProjectDirectory)\artifacts\$(Platform)\$(Configuration).UiTests\</OutDir>
+    <IntDir Condition="'$(UiSmokeTests)'=='true'">$(MSBuildProjectDirectory)\artifacts\obj\$(Platform)\$(Configuration).UiTests\</IntDir>
+    <TargetName Condition="'$(UiSmokeTests)'=='true'">CompIntel3.UiTests</TargetName>
+    <GenerateManifest>true</GenerateManifest>
+    <LinkIncremental Condition="'$(Configuration)'=='Debug'">true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;NOMINMAX;UNICODE;_UNICODE;WINRT_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <Optimization Condition="'$(Configuration)'=='Debug'">Disabled</Optimization>
+      <Optimization Condition="'$(Configuration)'=='Release'">MaxSpeed</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>windowsapp.lib;runtimeobject.lib;comctl32.lib;shell32.lib;ole32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Manifest><AdditionalManifestFiles>$(ProjectDir)app.manifest;%(AdditionalManifestFiles)</AdditionalManifestFiles></Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" Condition="'$(UiSmokeTests)'!='true'" />
+    <ClCompile Include="tests\UiSmokeTests.cpp" Condition="'$(UiSmokeTests)'=='true'" />
+    <ClCompile Include="src\ui\MainWindow.cpp" />
+    <ClCompile Include="src\ui\Storage.cpp" />
+    <ClCompile Include="src\core\Game.cpp" />
+    <ClCompile Include="src\runtime\PlayerProcess.cpp" />
+    <ClInclude Include="src\ui\MainWindow.h" />
+    <ClInclude Include="src\ui\Storage.h" />
+    <ClInclude Include="src\core\Game.h" />
+    <ClInclude Include="src\runtime\PlayerProcess.h" />
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="priconfig.xml" />
+    <ResourceCompile Include="src\Samples.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Microsoft.WindowsAppSDK.Foundation.2.6.5\build\native\Microsoft.WindowsAppSDK.Foundation.targets" />
+    <Import Project="packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.6.5\build\native\Microsoft.WindowsAppSDK.InteractiveExperiences.targets" />
+    <Import Project="packages\Microsoft.WindowsAppSDK.WinUI.2.6.5\build\native\Microsoft.WindowsAppSDK.WinUI.targets" />
+    <Import Project="packages\Microsoft.WindowsAppSDK.Base.2.6.5\build\native\Microsoft.WindowsAppSDK.Base.targets" />
+    <Import Project="packages\Microsoft.Web.WebView2.1.0.3719.77\build\native\Microsoft.Web.WebView2.targets" />
+    <Import Project="packages\Microsoft.Windows.CppWinRT.3.0.260818.1\build\native\Microsoft.Windows.CppWinRT.targets" />
+  </ImportGroup>
+  <!-- A programmatic WinUI app has no App.xaml to trigger the XAML PRI pipeline.
+       Merge component indexes explicitly so ms-appx theme resources resolve. -->
+  <ItemGroup>
+    <CompIntelResourcePri Include="$(ProjectDir)packages\Microsoft.WindowsAppSDK.Foundation.2.6.5\runtimes-framework\win-$(Platform)\native\*.pri" />
+    <CompIntelResourcePri Include="$(ProjectDir)packages\Microsoft.WindowsAppSDK.InteractiveExperiences.2.6.5\runtimes-framework\win-$(Platform)\native\*.pri" />
+    <CompIntelResourcePri Include="$(ProjectDir)packages\Microsoft.WindowsAppSDK.WinUI.2.6.5\runtimes-framework\win-$(Platform)\native\*.pri" />
+  </ItemGroup>
+  <Target Name="MergeCompIntelResources" AfterTargets="Build"
+          Inputs="@(CompIntelResourcePri);$(ProjectDir)priconfig.xml" Outputs="$(OutDir)resources.pri">
+    <MakeDir Directories="$(IntDir)ResourceInputs" />
+    <Copy SourceFiles="@(CompIntelResourcePri)" DestinationFolder="$(IntDir)ResourceInputs" />
+    <Exec Command="&quot;$(WindowsSdkDir)bin\$(WindowsTargetPlatformVersion)\x64\makepri.exe&quot; new /pr &quot;$(IntDir)ResourceInputs&quot; /cf &quot;$(ProjectDir)priconfig.xml&quot; /of &quot;$(OutDir)resources.pri&quot; /in CompIntel3 /o"
+          StdOutEncoding="utf-16" StdErrEncoding="utf-16" StandardOutputImportance="Low" />
+  </Target>
+</Project>

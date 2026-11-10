@@ -1,0 +1,3 @@
+#include <windows.h>
+101 RCDATA "../examples/gomoku.cpp"
+102 RCDATA "../examples/quoridor.cpp"

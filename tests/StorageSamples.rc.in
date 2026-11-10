@@ -1,0 +1,3 @@
+#include <windows.h>
+101 RCDATA "@CMAKE_CURRENT_SOURCE_DIR@/../examples/gomoku.cpp"
+102 RCDATA "@CMAKE_CURRENT_SOURCE_DIR@/../examples/quoridor.cpp"

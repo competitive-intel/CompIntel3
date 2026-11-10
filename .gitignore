@@ -1,0 +1,13 @@
+.reference/
+.vs/
+.tools/
+packages/
+artifacts/
+build/
+*.user
+*.suo
+*.VC.db
+*.VC.VC.opendb
+*.pdb
+*.obj
+*.log
