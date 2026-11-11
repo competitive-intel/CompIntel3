@@ -40,6 +40,15 @@ if (-not $PortableOnly) {
     try {
         if ($stream.ReadByte() -ne 0x4D -or $stream.ReadByte() -ne 0x5A) { throw 'Installer is not a Windows executable.' }
     } finally { $stream.Dispose() }
-    if ((Get-Item -LiteralPath $installer).VersionInfo.ProductVersion -ne $metadata.version) { throw 'Installer version does not match the portable ZIP.' }
+    # Windows file versions use four numeric components. CI/prerelease suffixes
+    # remain in the package filename, AppVersion and build-info.json.
+    $versionInfo = (Get-Item -LiteralPath $installer).VersionInfo
+    $expectedVersion = [version](($metadata.version -split '-')[0] + '.0')
+    $actualVersion = [version]::new($versionInfo.FileMajorPart, $versionInfo.FileMinorPart,
+        $versionInfo.FileBuildPart, $versionInfo.FilePrivatePart)
+    Write-Host "Installer version: $actualVersion; package version: $($metadata.version)"
+    if ($actualVersion -ne $expectedVersion) {
+        throw "Installer file version $actualVersion does not match package version $expectedVersion."
+    }
 }
 Write-Host 'PASS distribution checksums, runtime dependencies, notices, source provenance and package versions'
