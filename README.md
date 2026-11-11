@@ -22,6 +22,30 @@ artifacts\x64\Release\CompIntel3.exe
 
 WinUI 3 运行时使用自包含部署，启动应用时保留输出目录内的全部文件。C++ Release 运行库仍需安装 Microsoft Visual C++ 2015–2026 x64 Redistributable。Debug 版本供安装生成工具的开发环境使用。
 
+## 自动构建与安装包
+
+[Windows build and package](https://github.com/competitive-intel/CompIntel3/actions/workflows/windows-package.yml) 流水线在推送 `main`、提交到 `main` 的 PR 或手动运行时自动构建 x64 Release，运行规则、进程运行器、示例对局与存储测试，并生成：
+
+- `CompIntel3-<版本>-Setup-x64.exe`：安装到当前用户目录，创建开始菜单入口并提供卸载功能。
+- `CompIntel3-<版本>-windows-x64.zip`：解压整个目录后运行其中的 `CompIntel3.exe`。
+- `SHA256SUMS.txt`：安装包和 ZIP 的 SHA-256 校验值。
+
+在 Actions 对应运行的 **Artifacts** 中下载产物，默认保留 30 天。普通构建版本为 `0.1.0-ci.<运行编号>`；手动运行可指定版本。打包产物包含 Windows App SDK 和 MSVC 运行库、文档、示例及依赖许可文件，无需额外安装运行库；编译自己的 Player 仍需要 C++ 编译器。
+
+推送 `v1.0.0` 这类版本标签时，流水线使用标签中的版本号，并在成功后把安装包、ZIP 和校验文件上传到对应的 GitHub Release。带后缀的标签（例如 `v1.0.0-rc.1`）发布为预发布版本。
+
+本地也可以生成相同产物，需要 PowerShell 7 和 Inno Setup 6.3 及以上；输出位于 `artifacts\packages\<版本>\`：
+
+```powershell
+.\scripts\build.ps1 -Configuration Release -Tests
+.\scripts\package.ps1 -Version 1.0.0
+.\tests\PackagingTests.ps1 -PackageDirectory .\artifacts\packages\1.0.0
+```
+
+只生成便携 ZIP 时，使用 `package.ps1 -SkipInstaller`，验证时使用 `PackagingTests.ps1 -PortableOnly`。
+
+## 测试
+
 ```powershell
 .\scripts\build.ps1 -Tests
 ```
